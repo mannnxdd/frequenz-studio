@@ -1,0 +1,29 @@
+@import "tailwindcss";
+/* reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* subtle hover glow */
+
+.nav-link{position:relative}
+.nav-link::after{content:"";position:absolute;left:0;bottom:-8px;height:2px;width:0;background:rgba(255,255,255,.9);transition:width .25s ease}
+.nav-link.active::after{width:100%}
+
+.btn-shine{position:relative;overflow:hidden}
+.btn-shine::after{content:"";position:absolute;inset:-40%;transform:translateX(-120%) rotate(20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transition:transform .7s ease}
+.btn-shine:hover::after{transform:translateX(120%) rotate(20deg)}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.reveal-in{opacity:1;transform:translateY(0)}
+.glow-hover {
+  transition: transform .25s ease, border-color .25s ease;
+}
+
+.glow-hover:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.22)}
