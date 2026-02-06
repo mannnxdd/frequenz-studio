@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Package;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Helpers\WhatsAppHelper;
 
 class PublicBookingController extends Controller
 {

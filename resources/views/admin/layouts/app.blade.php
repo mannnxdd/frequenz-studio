@@ -9,7 +9,30 @@
 <body class="bg-black text-zinc-100">
   <header class="bg-zinc-950/70 backdrop-blur border-b border-zinc-800">
     <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-      <a href="{{ route('admin.dashboard') }}" class="font-semibold tracking-wide">Admin Panel</a>
+      <a href="{{ url('/admin') }}"
+        x-data="logoAnim()"
+        x-init="init()"
+        @mousemove="onMove($event)"
+        @mouseleave="onLeave()"
+        class="relative flex items-center gap-3 group select-none">
+
+            {{-- Glow layer --}}
+            <span
+                class="absolute inset-0 rounded-xl opacity-0 blur-xl
+                    bg-white/10 transition-opacity duration-300
+                    group-hover:opacity-100">
+            </span>
+
+            {{-- Logo image --}}
+            <img
+                src="{{ asset('images/logo.png') }}"
+                alt="Frequenz Studio"
+                class="relative h-8 w-auto
+                    transition-all duration-300 ease-out
+                    will-change-transform"
+                :style="style"
+            >
+        </a>
 
       <nav class="flex items-center gap-6 text-sm md:text-base text-zinc-300 font-medium">
         <a href="{{ route('admin.bookings.index') }}" class="hover:text-white">Booking</a>
