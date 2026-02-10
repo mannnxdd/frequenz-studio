@@ -34,15 +34,13 @@
             Creative Agency • Photo • Video • Design
         </p>
 
-        <div class="mt-5 max-w-3xl">
+        <div class="mt-5"> {{-- <div class="mt-5 max-w-3xl"> --}}
             <h1 class="text-3xl md:text-5xl font-bold tracking-tight leading-[1.1]">
-                Visual yang terasa mahal.
-                <span class="text-zinc-300">Untuk momen dan brand yang kamu bangun.</span>
+                Your creavity is our frequency Elevate Your Brand. Capture Every Moment.
             </h1>
 
-            <p class="mt-5 text-zinc-300/80 text-base md:text-lg leading-relaxed">
-                Frequenz Studio melayani fotografi & videografi wedding, sesi foto studio,
-                hingga desain grafis untuk kebutuhan branding dan promosi.
+            <p class="mt-5 text-zinc-300/80 text-base md:text-1xl leading-relaxed">
+                Frequenz adalah creative studio yang menggabungkan desain strategis dengan fotografi dan videografi profesional untuk membangun brand yang kuat serta mengabadikan momen dengan visual yang berkelas dan tak terlupakan. Karena visual yang kuat bukan hanya terlihat menarik tetapi juga mampu membangun kepercayaan.
             </p>
 
             <div class="mt-8 flex flex-col sm:flex-row gap-3">

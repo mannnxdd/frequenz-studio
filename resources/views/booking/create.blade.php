@@ -25,7 +25,7 @@
     {{-- SUCCESS MESSAGE --}}
     @if(session('success'))
         <div x-data="{show:true}" x-show="show" x-transition.duration.400ms
-             class="mb-8 rounded-2xl border border-emerald-800 bg-emerald-950/40 p-5 text-emerald-200">
+             class="mb-6 rounded-2xl border border-emerald-800 bg-emerald-950/40 p-5 text-emerald-200">
             <div class="flex items-start justify-between gap-4">
                 <p class="font-medium">
                     {{ session('success') }}
@@ -36,6 +36,36 @@
                 </button>
             </div>
         </div>
+    @endif
+
+    {{-- WHATSAPP ADMIN --}}
+    @if(session('wa_link'))
+        <div class="mb-8 rounded-2xl border border-green-800 bg-green-950/40 p-5 text-green-200">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <p class="font-medium">
+                        Booking berhasil dikirim 🎉
+                    </p>
+                    <p class="text-sm text-green-300 mt-1">
+                        Silakan klik tombol di samping untuk mengirim notifikasi ke admin via WhatsApp.
+                    </p>
+                </div>
+
+                <a href="{{ session('wa_link') }}"
+                   target="_blank"
+                   class="inline-flex items-center justify-center gap-2
+                          rounded-xl bg-green-600 px-5 py-3
+                          text-white font-semibold
+                          hover:bg-green-500 transition">
+                    Konfirmasi via WhatsApp
+                </a>
+            </div>
+        </div>
+
+        {{-- AUTO OPEN WHATSAPP (OPSIONAL) --}}
+        <script>
+            window.open("{{ session('wa_link') }}", "_blank");
+        </script>
     @endif
 
     {{-- ERROR MESSAGE --}}
@@ -121,9 +151,6 @@
                         </option>
                     @endforeach
                 </select>
-                <p class="text-xs text-zinc-500 mt-1">
-                    Otomatis terpilih jika kamu datang dari halaman layanan.
-                </p>
             </div>
 
             <div>
@@ -223,7 +250,7 @@
             </button>
 
             <p class="text-xs text-zinc-500">
-                Setelah mengisi form jangan lupa untuk konfirmasi ke Admin di nomor 08xxxxxxxxxx
+                Setelah mengisi form jangan lupa untuk konfirmasi ke Admin melalui WhatsApp.
             </p>
         </div>
     </form>

@@ -48,7 +48,7 @@ class PublicBookingController extends Controller
             'brief'      => ['nullable', 'string'],
         ]);
 
-        // Cari / buat customer berdasarkan nomor WA (unik)
+        // Cari / buat customer berdasarkan nomor WA
         $customer = Customer::firstOrCreate(
             ['phone' => $request->phone],
             [
@@ -58,19 +58,15 @@ class PublicBookingController extends Controller
             ]
         );
 
-        // Kalau customer sudah ada, update nama/email kalau kosong atau berubah (opsional tapi enak)
         $customer->update([
             'full_name' => $request->full_name,
             'email'     => $request->email,
         ]);
 
-        // Ambil paket untuk hitung harga (kalau dipilih)
-        $package = null;
-        if ($request->package_id) {
-            $package = Package::find($request->package_id);
-        }
+        $package = $request->package_id
+            ? Package::find($request->package_id)
+            : null;
 
-        // Generate booking_code yang aman unik
         $bookingCode = $this->generateBookingCode();
 
         $booking = Booking::create([
@@ -86,12 +82,24 @@ class PublicBookingController extends Controller
             'brief'        => $request->brief,
 
             'total_price'  => $package ? $package->price : 0,
-            'status'       => 'pending',
+            'status'       => Booking::STATUS_PENDING,
         ]);
+
+        /**
+         * ===============================
+         * WhatsApp Notification (Admin)
+         * ===============================
+         */
+        $waLink = null;
+        if (config('app.admin_whatsapp')) {
+            $waLink = 'https://wa.me/' . config('app.admin_whatsapp')
+                . '?text=' . WhatsAppHelper::bookingMessage($booking);
+        }
 
         return redirect()
             ->route('booking.create')
-            ->with('success', 'Booking berhasil dibuat. Kode booking kamu: ' . $booking->booking_code);
+            ->with('success', 'Booking berhasil dibuat. Kode booking kamu: ' . $booking->booking_code)
+            ->with('wa_link', $waLink);
     }
 
     public function checkForm()
@@ -115,7 +123,9 @@ class PublicBookingController extends Controller
             ->first();
 
         if (!$booking) {
-            return back()->withErrors(['not_found' => 'Booking tidak ditemukan. Pastikan kode booking dan nomor WA benar.']);
+            return back()->withErrors([
+                'not_found' => 'Booking tidak ditemukan. Pastikan kode booking dan nomor WA benar.'
+            ]);
         }
 
         return view('booking.result', compact('booking'));
@@ -123,11 +133,10 @@ class PublicBookingController extends Controller
 
     private function generateBookingCode(): string
     {
-        // Format: FQZ-2026-XXXXXX (acak) + retry kalau tabrakan
         $year = date('Y');
 
         do {
-            $random = strtoupper(bin2hex(random_bytes(3))); // 6 char
+            $random = strtoupper(bin2hex(random_bytes(3)));
             $code = "FQZ-{$year}-{$random}";
         } while (Booking::where('booking_code', $code)->exists());
 
